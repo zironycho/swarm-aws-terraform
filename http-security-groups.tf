@@ -1,7 +1,7 @@
 resource "aws_security_group" "http" {
   name              = "http"
   description       = "tf elb open ports"
-  vpc_id            = "${var.vpc_id}"
+  vpc_id            = "${aws_vpc.swarm.id}"
 
   ingress {
     from_port       = 80

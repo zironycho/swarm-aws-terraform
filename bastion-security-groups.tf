@@ -1,7 +1,7 @@
 resource "aws_security_group" "bastion" {
   name = "bastion"
   description = "Allow SSH traffic from the internet"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${aws_vpc.swarm.id}"
 
   ingress {
     from_port       = 22
@@ -24,7 +24,7 @@ resource "aws_security_group" "bastion" {
 resource "aws_security_group" "bastion_group" {
   name = "bastion_group"
   description = "Grants access to SSH from bastion server"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${aws_vpc.swarm.id}"
 
   ingress {
     from_port       = 22

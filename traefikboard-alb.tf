@@ -7,7 +7,7 @@ resource "aws_lb" "traefik_dashboard" {
     "${aws_security_group.swarm.id}",
     "${aws_security_group.http.id}",
   ]
-  subnets            = ["${data.aws_subnet_ids.already_exists.ids}"]
+  subnets            = ["${aws_subnet.az_subnet.*.id}"]
 
   enable_deletion_protection = false
 

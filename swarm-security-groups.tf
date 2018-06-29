@@ -1,7 +1,7 @@
 resource "aws_security_group" "swarm" {
   name        = "swarm"
   description = "tf swarm"
-  vpc_id            = "${var.vpc_id}"
+  vpc_id            = "${aws_vpc.swarm.id}"
 
   ingress {
     from_port       = 0

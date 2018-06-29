@@ -3,10 +3,17 @@ resource "aws_instance" "swarm_master" {
   instance_type = "${var.instance_types["manager"]}"
   key_name      = "${aws_key_pair.generated_key.key_name}"
 
-  security_groups = [
-    "${aws_security_group.bastion_group.name}",
-    "${aws_security_group.swarm.name}",
+  // security_groups = [
+  //   "${aws_security_group.bastion_group.name}",
+  //   "${aws_security_group.swarm.name}",
+  // ]
+
+  vpc_security_group_ids = [
+    "${aws_security_group.bastion_group.id}",
+    "${aws_security_group.swarm.id}",
   ]
+
+  subnet_id = "${aws_subnet.az_subnet.*.id[0]}"
 
   tags { 
     Name = "swarm by tf - master" 

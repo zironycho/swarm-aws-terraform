@@ -11,7 +11,6 @@
 * frontend-elb-address/prom: monitoring for nodes, services
 
 ## pre-requirements
-* default VPC 
 * aws cli
 * aws credentical
 * terraform cli
@@ -71,6 +70,7 @@ amis = {
 ```
 
 ## TODO
-* vpc
-* asg
-* nat
+[v] vpc
+[ ] asg
+[ ] nat
+[ ] multiple az

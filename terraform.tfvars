@@ -16,3 +16,9 @@ username = "core"
 num_managers = 2
 num_workers = 4
 
+vpc_cidr = "10.0.0.0/16"
+vpc_subnet_cidrs = [
+  "10.0.0.0/20",
+  "10.0.16.0/20",
+  "10.0.32.0/20",
+]
