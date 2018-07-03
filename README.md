@@ -2,22 +2,28 @@
 ![](img/swarm.png)
 
 ## used in
+* coreos ami
 * bastion host for ssh
 * 8080 for traefik reverse proxy
 * 8081 for traefik dashboard
-* frontend-elb-address/viz/: visualization containers in nodes
-* frontend-elb-address/portainer/: swarm management
-* frontend-elb-address/grafana: monitoring for nodes, services
-* frontend-elb-address/prom: monitoring for nodes, services
+* frontend-elb-address/viz/: [visualization containers in nodes](https://github.com/dockersamples/docker-swarm-visualizer)
+* frontend-elb-address/portainer/: [swarm management](https://portainer.io/)
+* frontend-elb-address/grafana: [monitoring for nodes, services](https://grafana.com/)
+* frontend-elb-address/prom: [monitoring for nodes, services](https://prometheus.io/)
+
+## monitoring applications
+![](img/traefik.png)
+![](img/viz.png)
+![](img/portainer.png)
+![](img/grafana.png)
 
 ## pre-requirements
 * aws cli
 * aws credentical
 * terraform cli
 
-## how to use
+## how to use `swarm-cluster` module
 ```
-# main.tf
 provider "aws" {
   region = "ap-southeast-1"
 }
@@ -32,58 +38,76 @@ module "swarm" {
     worker = "t2.micro"
   }
 }
+```
 
+## more details
+
+### checkout 3 files in `/example`:
+* main.tf
+* outputs.tf
+* Makefile
+
+### create cluster
+```
+$ cd example
 $ terraform init
 $ terraform apply
+data.external.version: Refreshing state...
+data.aws_availability_zones.az: Refreshing state...
+data.aws_ami.coreos_ami: Refreshing state...
+...
+Plan: 39 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+...
+W+OlXKEgkxKRvOuBJX88Fr6DHorsVDRimdFaIlIWq4uIQj3pRfEpMgyqu+M=
+-----END RSA PRIVATE KEY-----
+
+services = [
+    http://traefik-dashboard-xxxxx.elb.amazonaws.com,
+    http://frontend-yyyyy.elb.amazonaws.com/viz/,
+    http://frontend-yyyyy.elb.amazonaws.com/grafana,
+    http://frontend-yyyyy.elb.amazonaws.com/prom,
+    http://frontend-yyyyy.elb.amazonaws.com/portainer/
+]
 ```
 
-## get monitoring service urls
+### basic monitoring services
 ```
 $ make services
+http://traefik-dashboard-xxxxx.elb.amazonaws.com,
+http://frontend-yyyyy.elb.amazonaws.com/viz/,
+http://frontend-yyyyy.elb.amazonaws.com/grafana,
+http://frontend-yyyyy.elb.amazonaws.com/prom,
+http://frontend-yyyyy.elb.amazonaws.com/portainer/
 ```
 
-## connect ssh
-
-get private key first.
+### connect master node
 ```
 $ make key
-```
-
-### master swarm node
-```
-$ make ssh
+$ make ssh 
 ```
 
 ### any swarm node
 ```
-# Get private node address in swarm
 $ make nodes
-
+10.0.5.49,
+10.0.4.59,
+10.0.1.105,
+10.0.14.132,
+10.0.9.219,
+10.0.15.113,
+10.0.10.172
 $ make ssh-node addr=one_of_private_node_address_in_swarm
 ```
-## configures
-
-### change your instance types
-```
-# in terraform.tfvars
-instance_types = {
-  "manager" = "t2.micro"
-  "worker" = "t2.micro"
-}
-```
-
-### change your region & amis
-I am using coreos ami. If you want to change region please check coreos ami in [here](https://coreos.com/os/docs/latest/booting-on-ec2.html).
-```
-# in terraform.tfvars
-region = "ap-southeast-1"
-```
-
-## community modules
-* [coreos ami](https://github.com/terraform-community-modules/tf_aws_coreos_ami)
 
 ## TODO
-[v] vpc
-[ ] asg
-[ ] nat
-[ ] multiple az
+* [x] vpc
+* [ ] asg
+* [ ] nat
+* [ ] multiple az
