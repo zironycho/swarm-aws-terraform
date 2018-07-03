@@ -23,7 +23,7 @@ resource "null_resource" "apps" {
 
   provisioner "remote-exec" {
     inline = [
-      "export HOST=${aws_lb.frontend.dns_name}",
+      "export HOST=${local.frontend_host}",
       "chmod +x ~/monitoring.sh",
       "~/monitoring.sh",
     ]

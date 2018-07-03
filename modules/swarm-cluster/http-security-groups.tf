@@ -7,16 +7,16 @@ resource "aws_security_group" "http" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
-    ipv6_cidr_blocks= ["::/0"]
+    cidr_blocks     = "${var.http_cidr_blocks}"
+    ipv6_cidr_blocks= "${var.http_ipv6_cidr_blocks}"
   }
 
   ingress {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
-    ipv6_cidr_blocks= ["::/0"]
+    cidr_blocks     = "${var.http_cidr_blocks}"
+    ipv6_cidr_blocks= "${var.http_ipv6_cidr_blocks}"
   }
 
   egress {

@@ -18,3 +18,19 @@ variable "vpc_subnet_cidrs" {
 variable "username" {
   default = "core"
 }
+
+variable "http_cidr_blocks" {
+  default = [
+    "0.0.0.0/0"
+  ]
+}
+
+variable "http_ipv6_cidr_blocks" {
+  default = [
+    "::/0"
+  ]
+}
+
+variable "frontend_host" {
+  default = ""
+}

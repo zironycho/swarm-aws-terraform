@@ -26,3 +26,7 @@ module "bastion" {
   aws_key_name                = "${aws_key_pair.generated_key.key_name}"
   internal_security_group_id  = "${aws_security_group.swarm.id}"
 }
+
+locals {
+  frontend_host = "${var.frontend_host == "" ? aws_lb.frontend.dns_name : var.frontend_host}"
+}

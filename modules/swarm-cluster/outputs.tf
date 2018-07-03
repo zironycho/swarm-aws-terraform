@@ -21,10 +21,10 @@ output "elb_address" {
 output "services" {
   value = [
     "http://${aws_lb.traefik_dashboard.dns_name}",
-    "http://${aws_lb.frontend.dns_name}/viz/",
-    "http://${aws_lb.frontend.dns_name}/grafana",
-    "http://${aws_lb.frontend.dns_name}/prom",
-    "http://${aws_lb.frontend.dns_name}/portainer/",
+    "http://${local.frontend_host}/viz/",
+    "http://${local.frontend_host}/grafana",
+    "http://${local.frontend_host}/prom",
+    "http://${local.frontend_host}/portainer/",
   ]
 }
 
@@ -36,6 +36,25 @@ output "nodes" {
   ]
 }
 
+output "node_ids" {
+  value = [
+    "${aws_instance.swarm_master.id}",
+    "${aws_instance.swarm_manager.*.id}",
+    "${aws_instance.swarm_worker.*.id}",
+  ]
+}
+
 output "bastion" {
   value = "${module.bastion.public_ip}"
+}
+
+output "http_security_group_ids" {
+  value = [
+    "${aws_security_group.swarm.id}",
+    "${aws_security_group.http.id}",
+  ]
+}
+
+output "subnet_ids" {
+  value = "${module.vpc.az_subnet_ids}"
 }
