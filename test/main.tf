@@ -5,8 +5,6 @@ provider "aws" {
 module "swarm" {
   source = "../modules/swarm-cluster"
 
-  debug = true
-  
   num_managers = 2
   num_workers = 4
   instance_types {
