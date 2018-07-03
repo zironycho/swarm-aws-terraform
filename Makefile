@@ -13,7 +13,7 @@ addr:
 nodes:
 	@terraform output nodes
 
-bastion:
+ssh-bastion:
 	@ssh -i key.pem core@$(shell terraform output bastion)
 
 ssh-node:

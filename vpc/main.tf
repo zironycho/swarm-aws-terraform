@@ -1,12 +1,12 @@
 data "aws_availability_zones" "az" {}
 
-resource "aws_vpc" "swarm" {
+resource "aws_vpc" "main" {
   cidr_block = "${var.vpc_cidr}"
 }
 
 resource "aws_subnet" "az_subnet" {
   count      = 3
-  vpc_id     = "${aws_vpc.swarm.id}"
+  vpc_id     = "${aws_vpc.main.id}"
   cidr_block = "${var.vpc_subnet_cidrs[count.index]}"
   availability_zone = "${data.aws_availability_zones.az.names[count.index]}"
   map_public_ip_on_launch = true
@@ -17,7 +17,7 @@ resource "aws_subnet" "az_subnet" {
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = "${aws_vpc.swarm.id}"
+  vpc_id = "${aws_vpc.main.id}"
 
   tags {
     Name = "tf"
@@ -25,7 +25,7 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_route_table" "r" {
-  vpc_id = "${aws_vpc.swarm.id}"
+  vpc_id = "${aws_vpc.main.id}"
 
   route {
     cidr_block = "0.0.0.0/0"

@@ -37,5 +37,5 @@ output "nodes" {
 }
 
 output "bastion" {
-  value = "${aws_eip.bastion.public_ip}"
+  value = "${module.bastion.public_ip}"
 }

@@ -1,18 +1,16 @@
 resource "aws_instance" "bastion" {
-  ami             = "${var.amis["bastion"]}"
   instance_type   = "t2.nano"
-  key_name        = "${aws_key_pair.generated_key.key_name}"
+  ami             = "${var.ami}"
+  key_name        = "${var.aws_key_name}"
+  subnet_id       = "${var.subnet_id}"
 
   vpc_security_group_ids = [
     "${aws_security_group.bastion.id}",
-    "${aws_security_group.swarm.id}",
+    "${var.internal_security_group_id}",
   ]
 
-  subnet_id = "${aws_subnet.az_subnet.*.id[0]}"
 
-  tags { 
-    Name = "swarm by tf" 
-  }
+  tags {  Name = "swarm by tf - bastion" }
 }
 
 resource "aws_eip" "bastion" {
