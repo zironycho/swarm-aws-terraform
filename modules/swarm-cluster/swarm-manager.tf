@@ -1,7 +1,7 @@
-resource "aws_instance" "swarm_worker" {
-  count         = "${var.num_workers}"
-  ami           = "${lookup(var.amis, var.region)}"
-  instance_type = "${var.instance_types["worker"]}"
+resource "aws_instance" "swarm_manager" {
+  count         = "${var.num_managers}"
+  ami           = "${module.ami.id}"
+  instance_type = "${var.instance_types["manager"]}"
   depends_on    = ["aws_instance.swarm_master"]
   key_name      = "${aws_key_pair.generated_key.key_name}"
 
@@ -13,7 +13,7 @@ resource "aws_instance" "swarm_worker" {
   subnet_id = "${module.vpc.az_subnet_ids[0]}"
 
   tags { 
-    Name = "swarm by tf - worker" 
+    Name = "swarm by tf - manager" 
   }
 
   connection {
@@ -27,7 +27,6 @@ resource "aws_instance" "swarm_worker" {
     bastion_private_key = "${tls_private_key.tf-key.private_key_pem}"
   }
 
-
   provisioner "file" {
     content     = "${tls_private_key.tf-key.private_key_pem}"
     destination = "~/key.pem"
@@ -37,8 +36,8 @@ resource "aws_instance" "swarm_worker" {
     inline = [
       "chmod 400 ~/key.pem",
       "ssh-keyscan ${aws_instance.swarm_master.private_ip} >> ~/.ssh/known_hosts",
-      "scp -i ~/key.pem ${var.username}@${aws_instance.swarm_master.private_ip}:/worker.txt ./",
-      "docker swarm join --token $$(cat worker.txt) ${aws_instance.swarm_master.private_ip}:2377"
+      "scp -i ~/key.pem ${var.username}@${aws_instance.swarm_master.private_ip}:/manager.txt ./",
+      "docker swarm join --token $$(cat manager.txt) ${aws_instance.swarm_master.private_ip}:2377"
     ]
   }
 }

@@ -1,5 +1,5 @@
 resource "aws_instance" "swarm_master" {
-  ami           = "${lookup(var.amis, var.region)}"
+  ami           = "${module.ami.id}"
   instance_type = "${var.instance_types["manager"]}"
   key_name      = "${aws_key_pair.generated_key.key_name}"
 

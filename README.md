@@ -61,13 +61,10 @@ I am using coreos ami. If you want to change region please check coreos ami in [
 ```
 # in terraform.tfvars
 region = "ap-southeast-1"
-
-amis = {
-  "ap-southeast-1" = "ami-3cded940"
-  "us-west-2" = "ami-662f6d1e"
-  "bastion" = "ami-3cded940"
-}
 ```
+
+## community modules
+* [coreos ami](https://github.com/terraform-community-modules/tf_aws_coreos_ami)
 
 ## TODO
 [v] vpc
