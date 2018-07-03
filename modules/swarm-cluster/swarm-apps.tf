@@ -17,7 +17,7 @@ resource "null_resource" "apps" {
   }
 
   provisioner "file" {
-    source      = "./scripts/monitoring.sh"
+    source      = "${path.module}/scripts/monitoring.sh"
     destination = "~/monitoring.sh"
   }
 

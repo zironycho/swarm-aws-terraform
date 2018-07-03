@@ -3,7 +3,9 @@ provider "aws" {
 }
 
 module "swarm" {
-  source = "github.com/zironycho/swarm-aws-terraform//modules/swarm-cluster"
+  source = "../modules/swarm-cluster"
+
+  debug = true
   
   num_managers = 2
   num_workers = 4
