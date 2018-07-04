@@ -31,6 +31,14 @@ variable "http_ipv6_cidr_blocks" {
   ]
 }
 
-variable "frontend_host" {
+variable "route53_enabled" {
+  default = false
+}
+
+variable "route53_zone_name" {
+  default = ""
+}
+
+variable "route53_record_name" {
   default = ""
 }
