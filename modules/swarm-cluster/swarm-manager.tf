@@ -10,7 +10,7 @@ resource "aws_instance" "swarm_manager" {
     "${aws_security_group.swarm.id}",
   ]
 
-  subnet_id = "${module.vpc.az_subnet_ids[0]}"
+  subnet_id = "${module.vpc.az_subnet_ids[(count.index + 1) % 3]}"
 
   tags { 
     Name = "swarm by tf - manager" 
@@ -38,6 +38,23 @@ resource "aws_instance" "swarm_manager" {
       "ssh-keyscan ${aws_instance.swarm_master.private_ip} >> ~/.ssh/known_hosts",
       "scp -i ~/key.pem ${var.username}@${aws_instance.swarm_master.private_ip}:/manager.txt ./",
       "docker swarm join --token $$(cat manager.txt) ${aws_instance.swarm_master.private_ip}:2377"
+    ]
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/scripts/docker-init.sh"
+    destination = "~/docker-init.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "export AWS_REGION=${data.aws_region.current.name}",
+      "export AWS_ACCESSKEY=${var.aws_accesskey}",
+      "export AWS_SECRETKEY=${var.aws_secretkey}",
+      "export QUAY_USERNAME=${var.quay_username}",
+      "export QUAY_PASSWORD=${var.quay_password}",
+      "chmod +x ~/docker-init.sh",
+      "~/docker-init.sh",
     ]
   }
 }

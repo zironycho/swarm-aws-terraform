@@ -30,3 +30,5 @@ module "bastion" {
 locals {
   frontend_host = "${var.route53_enabled ? var.route53_record_name : aws_lb.frontend.dns_name}"
 }
+
+data "aws_region" "current" {}

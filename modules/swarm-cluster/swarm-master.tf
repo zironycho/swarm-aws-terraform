@@ -20,4 +20,32 @@ resource "aws_instance" "swarm_master" {
     docker swarm join-token worker --quiet > /worker.txt
     docker swarm join-token manager --quiet > /manager.txt
     EOF
+
+  connection {
+    type        = "ssh"
+    host        = "${self.private_ip}"
+    user        = "${var.username}"
+    private_key = "${tls_private_key.tf-key.private_key_pem}"
+
+    bastion_host        = "${module.bastion.public_ip}"
+    bastion_user        = "${var.username}"
+    bastion_private_key = "${tls_private_key.tf-key.private_key_pem}"
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/scripts/docker-init.sh"
+    destination = "~/docker-init.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "export AWS_REGION=${data.aws_region.current.name}",
+      "export AWS_ACCESSKEY=${var.aws_accesskey}",
+      "export AWS_SECRETKEY=${var.aws_secretkey}",
+      "export QUAY_USERNAME=${var.quay_username}",
+      "export QUAY_PASSWORD=${var.quay_password}",
+      "chmod +x ~/docker-init.sh",
+      "~/docker-init.sh",
+    ]
+  }
 }

@@ -9,7 +9,7 @@ docker service create -d --name traefik \
   traefik \
   --docker \
   --docker.swarmmode \
-  --docker.domain=$HOST \
+  --docker.domain=${HOST} \
   --docker.watch \
   --api
 
@@ -17,7 +17,7 @@ docker service create -d --name viz \
   --constraint=node.role==manager \
   --label "traefik.backend=viz" \
   --label "traefik.port=8080" \
-  --label "traefik.frontend.rule=Host:$HOST;PathPrefixStrip:/viz" \
+  --label "traefik.frontend.rule=Host:${HOST};PathPrefixStrip:/viz" \
   --network proxy \
   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   dockersamples/visualizer
@@ -26,7 +26,7 @@ docker service create -d --name portainer \
   --constraint 'node.role == manager' \
   --label "traefik.backend=portainer" \
   --label "traefik.port=9000" \
-  --label "traefik.frontend.rule=Host:$HOST;PathPrefixStrip:/portainer" \
+  --label "traefik.frontend.rule=Host:${HOST};PathPrefixStrip:/portainer" \
   --network proxy \
   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   portainer/portainer

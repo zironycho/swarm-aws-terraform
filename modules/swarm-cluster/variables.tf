@@ -42,3 +42,19 @@ variable "route53_zone_name" {
 variable "route53_record_name" {
   default = ""
 }
+
+variable "aws_accesskey" {
+  default = ""
+}
+
+variable "aws_secretkey" {
+  default = ""
+}
+
+variable "quay_username" {
+  default = ""
+}
+
+variable "quay_password" {
+  default = ""
+}
