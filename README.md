@@ -110,4 +110,4 @@ $ make ssh-node addr=one_of_private_node_address_in_swarm
 * [x] vpc
 * [ ] asg
 * [ ] nat
-* [ ] multiple az
+* [x] multiple az
