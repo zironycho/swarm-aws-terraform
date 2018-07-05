@@ -40,7 +40,60 @@ module "swarm" {
 }
 ```
 
-## more details
+### more variables for `swarm-cluster` module
+```
+module "swarm" {
+  
+  ...
+
+  # limit IP block to access monitoring services
+  http_cidr_blocks = [
+    "your.public.ip/32",
+  ]
+
+  # limit IP v6 block to access monitoring services
+  http_ipv6_cidr_blocks = []
+
+  # add frontend monitoring url record in route53
+  route53_enabled     = true
+  route53_zone_name   = "example.com."
+  route53_record_name = "mon.example.com"
+
+  # enable rexray s3fs, ebs
+  aws_accesskey       = "aws access key"
+  aws_secretkey       = "aws private key"
+
+  # enable quay.io private repository
+  quay_username       = "user name or bot name"
+  quay_password       = "user password or bot password"
+}
+```
+
+### add custom ALB
+```
+module "custom_alb" {
+  source = "github.com/zironycho/swarm-aws-terraform//modules/swarm-alb"
+  # fixed: Don't change it. It is swarm's setting. 
+  lb_name             = "frontend"
+  bastion_group_name  = "bastion_group"
+
+  # set your ALB
+  vpc_id              = "input your vpc id"
+  name                = "input new alb's name"
+  swarm_port          = port for alb listener: published port in swarm ingress network
+
+  # using pre-created ssl certification by aws
+  ssl_enabled         = true
+  acm_domain          = "example.com"
+
+  # add record in route53 for ALB
+  route53_enabled     = true
+  route53_zone_name   = "example.com."
+  route53_record_name = "api.example.com"
+}
+```
+
+## example
 
 ### checkout 3 files in `/example`:
 * main.tf
@@ -111,3 +164,5 @@ $ make ssh-node addr=one_of_private_node_address_in_swarm
 * [ ] asg
 * [ ] nat
 * [x] multiple az
+* [x] rexray s3fs, ebs
+* [x] quay.io private registry
