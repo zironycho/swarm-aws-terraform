@@ -27,5 +27,9 @@ resource "aws_security_group" "http" {
     ipv6_cidr_blocks= ["::/0"]
   }
 
-  tags { Name = "swarm by tf" }
+  tags {
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
+  }
 }

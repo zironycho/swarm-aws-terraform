@@ -10,7 +10,11 @@ resource "aws_instance" "bastion" {
   ]
 
 
-  tags {  Name = "swarm by tf - bastion" }
+  tags {
+    Name = "swarm by tf - bastion"
+    Swarm = "yes"
+    Terraform = "yes"
+  }
 }
 
 resource "aws_eip" "bastion" {

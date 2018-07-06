@@ -18,7 +18,11 @@ resource "aws_security_group" "bastion" {
     security_groups = ["${var.internal_security_group_id}"]
   }
 
-  tags { Name = "swarm by tf" }
+  tags {
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
+  }
 }
 
 resource "aws_security_group" "bastion_group" {

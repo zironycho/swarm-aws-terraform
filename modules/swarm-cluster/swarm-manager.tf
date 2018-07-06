@@ -12,8 +12,10 @@ resource "aws_instance" "swarm_manager" {
 
   subnet_id = "${module.vpc.az_subnet_ids[(count.index + 1) % 3]}"
 
-  tags { 
-    Name = "swarm by tf - manager" 
+  tags {
+    Name = "swarm by tf - manager"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 
   connection {

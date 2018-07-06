@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
+
 if [[ ! -z "${QUAY_USERNAME}" && ! -z "${QUAY_PASSWORD}" ]]; then
   docker login -u=${QUAY_USERNAME} \
   -p=${QUAY_PASSWORD} \

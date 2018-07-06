@@ -10,8 +10,10 @@ resource "aws_instance" "swarm_master" {
 
   subnet_id = "${module.vpc.az_subnet_ids[0]}"
 
-  tags { 
-    Name = "swarm by tf - master" 
+  tags {
+    Name = "swarm by tf - master"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 
   user_data     = <<-EOF

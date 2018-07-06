@@ -12,7 +12,9 @@ resource "aws_subnet" "az_subnet" {
   map_public_ip_on_launch = true
 
   tags {
-    Name = "tf_subnet"
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 }
 
@@ -20,7 +22,9 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.main.id}"
 
   tags {
-    Name = "tf"
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 }
 
@@ -33,7 +37,9 @@ resource "aws_route_table" "r" {
   }
 
   tags {
-    Name = "tf"
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 }
 

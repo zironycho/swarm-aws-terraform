@@ -22,7 +22,8 @@ resource "aws_lb" "frontend" {
 
   tags {
     Name = "swarm by tf"
-    Environment = "production"
+    Swarm = "yes"
+    Terraform = "yes"
   }
 }
 
@@ -34,6 +35,12 @@ resource "aws_lb_target_group" "frontend" {
   port              = 8080
   protocol          = "HTTP"
   vpc_id            = "${module.vpc.id}"
+
+  tags {
+    Name = "swarm by tf"
+    Swarm = "yes"
+    Terraform = "yes"
+  }
 }
 
 resource "aws_lb_target_group_attachment" "master" {
