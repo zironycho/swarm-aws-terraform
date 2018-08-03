@@ -10,8 +10,13 @@ resource "aws_instance" "swarm_worker" {
     "${aws_security_group.swarm.id}",
   ]
 
-  subnet_id = "${module.vpc.az_subnet_ids[count.index % 3]}"
+  subnet_id = "${module.vpc.az_subnet_ids[count.index % local.az_count]}"
   
+  root_block_device {
+    volume_size = "16"
+    volume_type = "gp2"
+  }
+
   tags {
     Name = "swarm by tf - worker"
     Swarm = "yes"

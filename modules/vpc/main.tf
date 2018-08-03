@@ -1,11 +1,15 @@
 data "aws_availability_zones" "az" {}
 
+locals {
+  az_count = "${length(data.aws_availability_zones.az.names)}"
+}
+
 resource "aws_vpc" "main" {
   cidr_block = "${var.vpc_cidr}"
 }
 
 resource "aws_subnet" "az_subnet" {
-  count      = 3
+  count      = "${local.az_count}"
   vpc_id     = "${aws_vpc.main.id}"
   cidr_block = "${var.vpc_subnet_cidrs[count.index]}"
   availability_zone = "${data.aws_availability_zones.az.names[count.index]}"
@@ -44,7 +48,7 @@ resource "aws_route_table" "r" {
 }
 
 resource "aws_route_table_association" "a" {
-  count          = 3
+  count          = "${local.az_count}"
   subnet_id      = "${aws_subnet.az_subnet.*.id[count.index]}"
   route_table_id = "${aws_route_table.r.id}"
 }

@@ -10,7 +10,7 @@ resource "aws_instance" "swarm_manager" {
     "${aws_security_group.swarm.id}",
   ]
 
-  subnet_id = "${module.vpc.az_subnet_ids[(count.index + 1) % 3]}"
+  subnet_id = "${module.vpc.az_subnet_ids[(count.index + 1) % local.az_count]}"
 
   tags {
     Name = "swarm by tf - manager"

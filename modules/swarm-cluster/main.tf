@@ -29,6 +29,7 @@ module "bastion" {
 
 locals {
   frontend_host = "${var.route53_enabled ? var.route53_record_name : aws_lb.frontend.dns_name}"
+  az_count = "${length(module.vpc.az_subnet_ids)}"
 }
 
 data "aws_region" "current" {}
