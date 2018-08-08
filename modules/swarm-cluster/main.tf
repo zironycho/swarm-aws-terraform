@@ -33,3 +33,15 @@ locals {
 }
 
 data "aws_region" "current" {}
+
+data "template_file" "docker_init" {
+  template = "${file("${path.module}/scripts/docker-init.tpl")}"
+  
+  vars {
+    AWS_REGION        = "${data.aws_region.current.name}"
+    AWS_ACCESSKEY     = "${var.aws_accesskey}"
+    AWS_SECRETKEY     = "${var.aws_secretkey}"
+    QUAY_USERNAME     = "${var.quay_username}"
+    QUAY_PASSWORD     = "${var.quay_password}"
+  }
+}

@@ -44,17 +44,12 @@ resource "aws_instance" "swarm_manager" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/docker-init.sh"
+    content = "${template_file.docker_init.rendered}"
     destination = "~/docker-init.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "export AWS_REGION=${data.aws_region.current.name}",
-      "export AWS_ACCESSKEY=${var.aws_accesskey}",
-      "export AWS_SECRETKEY=${var.aws_secretkey}",
-      "export QUAY_USERNAME=${var.quay_username}",
-      "export QUAY_PASSWORD=${var.quay_password}",
       "chmod +x ~/docker-init.sh",
       "~/docker-init.sh",
     ]

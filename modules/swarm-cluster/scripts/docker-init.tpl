@@ -2,6 +2,7 @@
 
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
+sudo systemctl stop update-engine
 
 if [[ ! -z "${QUAY_USERNAME}" && ! -z "${QUAY_PASSWORD}" ]]; then
   docker login -u=${QUAY_USERNAME} \
