@@ -44,7 +44,7 @@ resource "aws_instance" "swarm_manager" {
   }
 
   provisioner "file" {
-    content = "${template_file.docker_init.rendered}"
+    content = "${data.template_file.docker_init.rendered}"
     destination = "~/docker-init.sh"
   }
 
