@@ -1,4 +1,6 @@
 #!/bin/bash
+export HOST=${HOST}
+
 docker network create -d overlay proxy
 
 docker service create -d --name traefik \

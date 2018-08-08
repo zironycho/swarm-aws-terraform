@@ -58,3 +58,16 @@ variable "quay_username" {
 variable "quay_password" {
   default = ""
 }
+
+variable "name_traefik_dashboard" {
+  default = "traefik-dashboard"
+}
+
+variable "name_frontend" {
+  default = "frontend"
+}
+
+variable "name_key" {
+  default = "tf-key"
+}
+

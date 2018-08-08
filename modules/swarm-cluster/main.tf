@@ -4,7 +4,7 @@ resource "tls_private_key" "tf-key" {
 }
 
 resource "aws_key_pair" "generated_key" {
-  key_name                    = "tf-key"
+  key_name                    = "${var.name_key}-${random_string.default.result}"
   public_key                  = "${tls_private_key.tf-key.public_key_openssh}"
 }
 
@@ -44,4 +44,9 @@ data "template_file" "docker_init" {
     QUAY_USERNAME     = "${var.quay_username}"
     QUAY_PASSWORD     = "${var.quay_password}"
   }
+}
+
+resource "random_string" "default" {
+  length    = 6
+  special   = false
 }

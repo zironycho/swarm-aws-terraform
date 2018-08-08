@@ -10,7 +10,7 @@ resource "aws_lb_listener" "treafik_dashboard" {
 }
 
 resource "aws_lb" "traefik_dashboard" {
-  name               = "traefik-dashboard"
+  name               = "${var.name_traefik_dashboard}-${random_string.default.result}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [
@@ -32,7 +32,7 @@ resource "aws_lb" "traefik_dashboard" {
 # target group
 # ================================================================
 resource "aws_lb_target_group" "traefik_dashboard" {
-  name              = "traefik-dashboard"
+  name              = "${var.name_traefik_dashboard}-${random_string.default.result}"
   port              = 8081
   protocol          = "HTTP"
   vpc_id            = "${module.vpc.id}"

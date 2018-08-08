@@ -1,3 +1,11 @@
+data "template_file" "monitoring" {
+  template = "${file("${path.module}/scripts/monitoring.tpl")}"
+  
+  vars {
+    HOST = "${local.frontend_host}"
+  }
+}
+
 resource "null_resource" "apps" {
   triggers {
     master_id = "${aws_instance.swarm_master.id}"
@@ -17,13 +25,11 @@ resource "null_resource" "apps" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/scripts/monitoring.sh"
+    content     = "${data.template_file.monitoring.rendered}"
     destination = "~/monitoring.sh"
   }
-
   provisioner "remote-exec" {
     inline = [
-      "export HOST=${local.frontend_host}",
       "chmod +x ~/monitoring.sh",
       "~/monitoring.sh",
     ]
