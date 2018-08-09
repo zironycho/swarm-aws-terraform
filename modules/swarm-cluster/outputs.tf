@@ -58,3 +58,7 @@ output "http_security_group_ids" {
 output "subnet_ids" {
   value = "${module.vpc.az_subnet_ids}"
 }
+
+output "vpc_id" {
+  value = "${module.vpc.id}"
+}
