@@ -25,3 +25,11 @@ output "nodes" {
 output "bastion" {
   value = "${module.swarm.bastion}"
 }
+
+output "vpc_id" {
+  value = "${module.swarm.vpc_id}"
+}
+
+output "lb_name" {
+  value = "${module.swarm.lb_name}"
+}

@@ -62,3 +62,7 @@ output "subnet_ids" {
 output "vpc_id" {
   value = "${module.vpc.id}"
 }
+
+output "lb_name" {
+  value = "${aws_lb.frontend.name}"
+}
