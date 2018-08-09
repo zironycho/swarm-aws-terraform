@@ -45,4 +45,11 @@ resource "aws_instance" "swarm_master" {
       "~/docker-init.sh",
     ]
   }
+
+  # set node label
+  provisioner "remote-exec" {
+    inline = [
+      "docker node update --label-add az=${self.availability_zone} ${self.private_dns}",
+    ]
+  }
 }

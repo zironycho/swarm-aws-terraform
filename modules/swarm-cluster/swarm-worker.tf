@@ -60,4 +60,22 @@ resource "aws_instance" "swarm_worker" {
       "~/docker-init.sh",
     ]
   }
+
+  # set node label
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = "${aws_instance.swarm_master.private_ip}"
+      user        = "${var.username}"
+      private_key = "${tls_private_key.tf-key.private_key_pem}"
+
+      bastion_host        = "${module.bastion.public_ip}"
+      bastion_user        = "${var.username}"
+      bastion_private_key = "${tls_private_key.tf-key.private_key_pem}"
+    }
+
+    inline = [
+      "docker node update --label-add az=${self.availability_zone} ${self.private_dns}",
+    ]
+  }
 }
